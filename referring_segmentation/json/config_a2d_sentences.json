@@ -11,7 +11,7 @@
   "testing_datasets": [
    "a2d_sentences"
   ],
-  "datasets_root": "/media/wwk/HDD2/datasets/referring_video_segmentation/a2d_sentences",
+  "datasets_root": "/home/zhangxin/datasets/referring_video_segmentation/a2d_sentences",
   "input_size": [
    320,
    320

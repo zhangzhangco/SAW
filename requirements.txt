@@ -1,0 +1,14 @@
+einops==0.8.0
+ffmpeg==1.4
+gradio==5.4.0
+h5py==3.12.1
+numpy==2.1.2
+Pillow==11.0.0
+python_hostlist==2.0.0
+Requests==2.32.3
+torch==2.3.0
+torchtext==0.18.0
+torchvision==0.18.0
+tqdm==4.66.5
+transformers==4.46.0
+warmup_scheduler==0.3

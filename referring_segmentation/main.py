@@ -26,6 +26,7 @@ def main(args):
     if args.checkpoint is not None:
         testing_config['checkpoint'] = args.checkpoint
 
+    # 设置随机种子以确保结果可复现
     torch.manual_seed(setting['seed'])
     np.random.seed(setting['seed'])
     random.seed(setting['seed'])
@@ -34,15 +35,16 @@ def main(args):
     testing_config['cuda'] = is_cuda
     training_config['train_backbone'] = model_config['train_backbone']
 
-    # init_distributed_mode()
+    # 根据模式选择数据集
     if args.mode == 'train':
         dataset = MyDataset(data_config, 'train')
         val_dataset = MyDataset(data_config, 'test')
     elif args.mode == 'test':
         dataset = MyDataset(data_config, 'test')
     else:
-        raise NotImplementedError
+        raise NotImplementedError("不支持的模式")
 
+    # 初始化模型
     model = Model(model_config)
     if is_cuda:
         model = nn.DataParallel(model)
@@ -50,6 +52,8 @@ def main(args):
 
     if not os.path.exists(training_config['log_root']):
         os.mkdir(training_config['log_root'])
+
+    # 根据模式执行训练或测试
     if args.mode == 'train':
         trainer = Trainer(training_config)
         trainer.train(model, dataset, val_dataset)
@@ -57,11 +61,10 @@ def main(args):
         tester = Tester(testing_config)
         tester.test(model, dataset)
     else:
-        raise NotImplementedError
+        raise NotImplementedError("不支持的模式")
 
 
 if __name__ == '__main__':
-
     parser = argparse.ArgumentParser()
     parser.add_argument('--json_file', type=str, default='json/config_a2d_sentences.json')
     parser.add_argument('--mode', type=str, default='train')

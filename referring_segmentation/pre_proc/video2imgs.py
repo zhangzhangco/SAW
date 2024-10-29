@@ -25,5 +25,5 @@ def video2imgs(videos_path, imgs_save_path):
 
 if __name__ =='__main__':
     videos_path = '/media/wwk/HDD1/dataset/referring_video_segmentation/a2d_sentences/Release/clips320H'
-    imgs_save_path = '/media/wwk/HDD2/datasets/referring_video_segmentation/a2d_sentences/Rename_Images'
+    imgs_save_path = '/home/zhangxin/datasets/referring_video_segmentation/a2d_sentences/Rename_Images'
     video2imgs(videos_path, imgs_save_path)

@@ -1,29 +1,28 @@
-# SAW
+# SAW（序列整体）
 
-The official implementation OF paper "Sequence as A Whole: A Unified Framework for Video Action Localization with Long-range Text Query" \[[Paper](https://ieeexplore.ieee.org/document/10043827)\]
+这是论文《序列整体：一种基于长程文本查询的统一视频动作定位框架》的官方实现。[[论文链接](https://ieeexplore.ieee.org/document/10043827)]
 
-![](./docs/net.png)
+![网络架构图](./docs/net.png)
 
-We propose a unified framework which handles the whole video in sequential manner with long-range and dense visual-linguistic interaction in an end-to-end manner. Specifically, a lightweight relevance filtering based transformer (Ref-Transformer) is designed, which is composed of relevance filtering based attention and temporally expanded MLP. The text-relevant spatial regions and temporal clips in video can be efficiently highlighted through the relevance filtering and then propagated among the whole video sequence with the temporally expanded MLP. The unified framework can be utilized to varies video-text action localization tasks, e.g., referring video segmentation, temporal sentence grounding, and spatiotemporal video grounding. 
+## 项目概述
 
-## Requirements
+我们提出了一个统一的框架，以序列方式处理整个视频，实现端到端的长程密集视觉-语言交互。具体来说，我们设计了一个基于相关性过滤的轻量级Transformer（Ref-Transformer），它由基于相关性过滤的注意力机制和时间扩展的MLP组成。通过相关性过滤，可以高效地突出视频中与文本相关的空间区域和时间片段，然后通过时间扩展的MLP在整个视频序列中传播。这个统一框架可以应用于各种视频-文本动作定位任务，如指代视频分割、时序句子定位和时空视频定位。
 
-* python 3.8
+## 环境要求
 
-* pytorch 1.9.1
+* Python 3.9
+* PyTorch 2.1.2
+* torchtext 0.18.0
 
-* torchtext 0.10.1
+## 指代视频分割
 
+进入 `referring_segmentation` 目录以进行指代视频分割任务。
 
-## Referring Video Segmentation
+### 1. 数据集准备
 
-run `cd referring_segmentation` for referring video segmentation task.
+从 [这里](https://kgavrilyuk.github.io/publication/actor_action/) 下载A2D Sentences数据集和J-HMDB Sentences数据集，并将视频转换为RGB帧。
 
-### 1. Dataset
-
-Download the A2D Sentences dataset and J-HMDB Sentences dataset from [https://kgavrilyuk.github.io/publication/actor_action/](https://kgavrilyuk.github.io/publication/actor_action/) and convert the videos to RGB frames. 
-
-For A2D Sentences dataset, run `python pre_proc\video2imgs.py` to convert videos to RGB frames. The following directory structure is expected:
+对于A2D Sentences数据集，运行 `python pre_proc\video2imgs.py` 将视频转换为RGB帧。预期的目录结构如下：
 
 ```python
 -a2d_sentences
@@ -38,51 +37,54 @@ For A2D Sentences dataset, run `python pre_proc\video2imgs.py` to convert videos
     -jhmdb_annotation.txt
 ```
 
-Edit the item `datasets_root` in `json/onfig_$DATASET$.json` to be the current dataset path.
 
-Run `python pre_proc\generate_data_list.py` to generate the training and testing data splits.
+编辑 `json/config_$DATASET$.json` 中的 `datasets_root` 项为当前数据集路径。
 
-### 2. Backbone
+运行 `python pre_proc\generate_data_list.py` 生成训练和测试数据分割。
 
-Download the pretrained DeepLabResNet from [https://github.com/VainF/DeepLabV3Plus-Pytorch](https://github.com/VainF/DeepLabV3Plus-Pytorch) and put it into `model/pretrained/`. 
+### 2. 骨干网络
 
-### 4. Training
+从 [DeepLabV3Plus-Pytorch](https://github.com/VainF/DeepLabV3Plus-Pytorch) 下载预训练的DeepLabResNet，并将其放入 `model/pretrained/` 目录。
 
-Only the A2D Sentences dataset is adopted for training, run:
+### 3. 训练
+
+仅使用A2D Sentences数据集进行训练，运行：
+
 
 ```python
 python main.py --json_file=json\config_a2d_sentences.json --mode=train
 ```
 
-### 5. Evaluation
+### 4. 评估
 
-For A2d Sentences dataset, run:
+对于A2D Sentences数据集，运行：
+
 
 ```python
 python main.py --json_file=json\config_a2d_sentences.json --mode=test
 ``` 
 
-For JHMDB Sentences dataset, run:
+对于JHMDB Sentences数据集，运行：
 
 ```python
 python main.py --json_file=json\config_jhmdb_sentences.json --mode=test
 ``` 
 
-## Temporal Sentence Grounding
+## 时序句子定位
 
-run `cd temporal_grounding` for referring temporal sentence grounding task.
+进入 `temporal_grounding` 目录以进行时序句子定位任务。
 
-### 1. Dataset
+### 1. 数据集准备
 
-* For charades-STA dataset, download the pre-extracted I3D features following [LGI4temporalgrounding](https://github.com/JonghwanMun/LGI4temporalgrounding) and the pre-extracted VGG feature following [2D-TAN](https://github.com/microsoft/VideoX/tree/master/2D-TAN).
+* Charades-STA数据集：按照 [LGI4temporalgrounding](https://github.com/JonghwanMun/LGI4temporalgrounding) 下载预提取的I3D特征，按照 [2D-TAN](https://github.com/microsoft/VideoX/tree/master/2D-TAN) 下载预提取的VGG特征。
 
-* For TACoS dataset, download the pre-extracted C3D features following [2D-TAN](https://github.com/microsoft/VideoX/tree/master/2D-TAN)
+* TACoS数据集：按照 [2D-TAN](https://github.com/microsoft/VideoX/tree/master/2D-TAN) 下载预提取的C3D特征。
 
-* For ActivityNet Captions dataset, download the pre-extracted C3D features from [http://activity-net.org/challenges/2016/download.html](http://activity-net.org/challenges/2016/download.html).
+* ActivityNet Captions数据集：从 [这里](http://activity-net.org/challenges/2016/download.html) 下载预提取的C3D特征。
 
-### 2. Training and Evaluation
+### 2. 训练和评估
 
-The config files can be find in `./json` and the following model settings are supported
+配置文件位于 `./json` 目录，支持以下模型设置：
 
 ```
 -config_ActivityNet_C3D_anchor.json

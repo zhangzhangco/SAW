@@ -19,7 +19,7 @@ def generate_annotation_dict(root):
     return annotations
 
 
-def generate_data_list_a2d(dataset_root='/media/wwk/HDD2/datasets/referring_video_segmentation/a2d_sentences/', save_root='./data'):
+def generate_data_list_a2d(dataset_root='/home/zhangxin/datasets/referring_video_segmentation/a2d_sentences/', save_root='./data'):
     if not os.path.exists(save_root):
         os.mkdir(save_root)
     assert os.path.exists(
@@ -67,7 +67,7 @@ def generate_data_list_a2d(dataset_root='/media/wwk/HDD2/datasets/referring_vide
         num_videos, num_annotated_videos))
 
 
-def generate_data_list_jhmdb(dataset_root='/media/wwk/HDD1/dataset/referring_video_segmentation/jhmdb_sentences', save_root='./data'):
+def generate_data_list_jhmdb(dataset_root='/home/zhangxin/datasets/referring_video_segmentation/jhmdb_sentences', save_root='./data'):
     assert os.path.exists(
             dataset_root), ('Incorrect dataset path: {}'.format(dataset_root))
     num_videos = 0
@@ -99,7 +99,7 @@ def generate_data_list_jhmdb(dataset_root='/media/wwk/HDD1/dataset/referring_vid
 
 if __name__ == '__main__':
     save_root='./data'
-    a2d_dataset_root=''
-    jhmdb_dataset_root=''
+    a2d_dataset_root= '/home/zhangxin/datasets/referring_video_segmentation/a2d_sentences/'
+    jhmdb_dataset_root='/home/zhangxin/datasets/referring_video_segmentation/jhmdb_sentences'
     generate_data_list_a2d(a2d_dataset_root, save_root)
     generate_data_list_jhmdb(jhmdb_dataset_root, save_root)

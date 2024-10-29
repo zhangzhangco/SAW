@@ -1,0 +1,22 @@
+.vscode/
+.vector_cache/
+temp_frames/
+# 临时文件
+*.tmp
+*.temp
+*~
+
+
+# 模型文件
+*.pth
+*.pt
+*.onnx
+*.pkl
+*.h5
+*.hdf5
+*.pb
+*.tflite
+*.weights
+*.model
+*.bin
+*.params

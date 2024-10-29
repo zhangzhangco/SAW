@@ -11,10 +11,16 @@ from utils.video_reader import clip_annotation_reader, sequence_reader
 import json
 import torchtext
 import torch.nn as nn
+from torchtext.vocab import GloVe
 
 
 class MyDataset(data.Dataset):
     def __init__(self, config, mode='train'):
+        """
+        初始化数据集
+        :param config: 配置字典,包含数据集的各种设置
+        :param mode: 'train' 或 'test',指定数据集模式
+        """
         super(MyDataset, self).__init__()
         self.input_size = config['input_size']
         self.clip_size = config['clip_size']
@@ -53,7 +59,7 @@ class MyDataset(data.Dataset):
         
         embedding_name, embedding_dim = config['embedding_type'].split(
             '_')[1], int(config['embedding_type'].split('_')[2])
-        self.vocab = torchtext.vocab.GloVe(
+        self.vocab = GloVe(
             name=embedding_name, dim=embedding_dim)
         self.vocab.itos.extend(['<unk>'])
         self.vocab.stoi['<unk>'] = self.vocab.vectors.shape[0]
